@@ -328,9 +328,9 @@ void AssertEqualImpl(const T& t, const U& u, const string& t_str, const string& 
     }
 }
 
-// #define ASSERT_EQUAL(a, b) AssertEqualImpl((a), (b), #a, #b, __FILE__, __FUNCTION__, __LINE__, ""s)
+#define ASSERT_EQUAL(a, b) AssertEqualImpl((a), (b), #a, #b, __FILE__, __FUNCTION__, __LINE__, ""s)
 
-// #define ASSERT_EQUAL_HINT(a, b, hint) AssertEqualImpl((a), (b), #a, #b, __FILE__, __FUNCTION__, __LINE__, (hint))
+#define ASSERT_EQUAL_HINT(a, b, hint) AssertEqualImpl((a), (b), #a, #b, __FILE__, __FUNCTION__, __LINE__, (hint))
 
 void AssertImpl(bool value, const string& expr_str, const string& file, const string& func, unsigned line,
                 const string& hint) {
@@ -345,9 +345,9 @@ void AssertImpl(bool value, const string& expr_str, const string& file, const st
     }
 }
 
-// #define ASSERT(expr) AssertImpl(!!(expr), #expr, __FILE__, __FUNCTION__, __LINE__, ""s)
+#define ASSERT(expr) AssertImpl(!!(expr), #expr, __FILE__, __FUNCTION__, __LINE__, ""s)
 
-// #define ASSERT_HINT(expr, hint) AssertImpl(!!(expr), #expr, __FILE__, __FUNCTION__, __LINE__, (hint))
+#define ASSERT_HINT(expr, hint) AssertImpl(!!(expr), #expr, __FILE__, __FUNCTION__, __LINE__, (hint))
 
 template <typename T>
 void RunTestImpl(const string& func , T& t) {
@@ -355,7 +355,7 @@ void RunTestImpl(const string& func , T& t) {
     cerr << func << " OK" << endl;
 }
 
-// #define RUN_TEST(func)  RunTestImpl(#func, (func))
+#define RUN_TEST(func)  RunTestImpl(#func, (func))
 
 // -------- Ќачало модульных тестов поисковой системы ----------
 
