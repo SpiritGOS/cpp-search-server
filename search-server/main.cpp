@@ -537,10 +537,10 @@ void TestForRelevance() {
 		return (lhs - rhs) > EPS; });
 	vector <Document> nv = server.FindTopDocuments(word);
 	for (int i = 0; i < tf_idf.size(); i++)
-		ASSERT((tf_idf[i] - nv[i].relevance) < EPS);
+		ASSERT(abs(tf_idf[i] - nv[i].relevance) < EPS);
 }
 
-void TestForRaiting() {
+void TestForRating() {
 	const int doc_id = 42;
 	const string content = "cat in the city"s;
 
@@ -611,7 +611,7 @@ void TestSearchServer() {
 	RUN_TEST(TestSortDocument);
 	RUN_TEST(TestForPredicate);
 	RUN_TEST(TestForRelevance);
-	RUN_TEST(TestForRaiting);
+	RUN_TEST(TestForRating);
 }
 
 // --------- ќкончание модульных тестов поисковой системы -----------
