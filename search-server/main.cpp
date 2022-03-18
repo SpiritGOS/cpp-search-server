@@ -108,7 +108,7 @@ public:
 		{
 			if (!IsValidWord(word))
 			{
-				throw invalid_argument("Слово " + word + " содержит недопустимый символ"s);
+				throw invalid_argument("Слово: " + word + " - содержит недопустимый символ"s);
 			}
 		}
 	}
@@ -199,7 +199,7 @@ public:
 		{
 			return document_ids_[index];
 		}
-		throw out_of_range(""s);
+		throw out_of_range("Индекс переданного документа выходит за пределы допустимого диапазона"s);
 	}
 
 	tuple<vector<string>, DocumentStatus> MatchDocument(const string &raw_query, int document_id) const
