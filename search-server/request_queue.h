@@ -9,6 +9,7 @@ public:
     explicit RequestQueue(SearchServer &search_server) : search_server_(search_server) {}
     // сделаем "обёртки" для всех методов поиска, чтобы сохранять результаты для нашей статистики
     // template <typename DocumentPredicate>
+    template <typename DocumentPredicate>
     std::vector<Document> AddFindRequest(const std::string &raw_query, DocumentPredicate document_predicate);
 
     std::vector<Document> AddFindRequest(const std::string &raw_query, DocumentStatus status);

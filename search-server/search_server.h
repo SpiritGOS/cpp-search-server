@@ -36,9 +36,15 @@ public:
 
     int GetDocumentCount() const;
 
-    int GetDocumentId(int index) const;
+    std::vector<int>::iterator begin();
+
+    std::vector<int>::iterator end();
 
     std::tuple<std::vector<std::string>, DocumentStatus> MatchDocument(const std::string &raw_query, int document_id) const;
+
+    const map<string, double>& GetWordFrequencies(int document_id) const;
+
+    void RemoveDocument(int document_id);
 
 private:
     struct DocumentData

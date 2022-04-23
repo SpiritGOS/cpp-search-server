@@ -30,15 +30,15 @@ void FindTopDocuments(const SearchServer &search_server, const std::string &raw_
     }
 }
 
+/*
 void MatchDocuments(const SearchServer &search_server, const std::string &query)
 {
     try
     {
         std::cout << "Матчинг документов по запросу: "s << query << std::endl;
-        const int document_count = search_server.GetDocumentCount();
-        for (int index = 0; index < document_count; ++index)
+        vector<int> document_ids = vector(search_server.begin(), search_server.end());
+        for (auto document_id : document_ids)
         {
-            const int document_id = search_server.GetDocumentId(index);
             const auto [words, status] = search_server.MatchDocument(query, document_id);
             PrintMatchDocumentResult(document_id, words, status);
         }
@@ -48,3 +48,4 @@ void MatchDocuments(const SearchServer &search_server, const std::string &query)
         std::cout << "Ошибка матчинга документов на запрос "s << query << ": " << e.what() << std::endl;
     }
 }
+*/
