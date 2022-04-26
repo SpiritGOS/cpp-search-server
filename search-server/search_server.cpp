@@ -18,9 +18,10 @@ void SearchServer::AddDocument(int document_id, const std::string& document, Doc
 	for (const std::string& word : words)
 	{
 		word_to_document_freqs_[word][document_id] += inv_word_count;
+		words_in_document_[document_id][word] += inv_word_count;
 	}
 	documents_.emplace(document_id, DocumentData{ ComputeAverageRating(ratings), status });
-	document_ids_.push_back(document_id);
+	document_ids_.insert(document_id);
 }
 
 std::vector<Document> SearchServer::FindTopDocuments(const std::string& raw_query, DocumentStatus status) const
@@ -39,11 +40,11 @@ int SearchServer::GetDocumentCount() const
 	return documents_.size();
 }
 
-std::vector<int>::iterator SearchServer::begin() {
+std::set<int>::iterator SearchServer::begin() {
 	return document_ids_.begin();
 }
 
-std::vector<int>::iterator SearchServer::end() {
+std::set<int>::iterator SearchServer::end() {
 	return document_ids_.end();
 }
 
@@ -165,28 +166,18 @@ double SearchServer::ComputeWordInverseDocumentFreq(const std::string& word) con
 }
 
 const map<string, double>& SearchServer::GetWordFrequencies(int document_id) const {
-	static map<string, double> result;
-	result.clear();
-	double total_words = 0;
-	for (const auto& elem : word_to_document_freqs_) {
-		if (elem.second.count(document_id)) {
-			result[elem.first] += elem.second.at(document_id);
-			total_words += elem.second.at(document_id);
-		}
+	if (words_in_document_.count(document_id)) {
+		return words_in_document_.at(document_id);
 	}
-	for (auto elem : result) {
-		elem.second /= total_words;
-	}
+	map<string, double> result;
 	return result;
 }
 
 void SearchServer::RemoveDocument(int document_id) {
-	auto it = remove(begin(), end(), document_id);
-	document_ids_.erase(it, end());
-	documents_.erase(document_id);
-	for (auto& elem : word_to_document_freqs_) {
-		if (elem.second.count(document_id)) {
-			elem.second.erase(document_id);
-		}
+	if (!document_ids_.count(document_id)) {
+		return;
 	}
+	document_ids_.erase(document_id);
+	documents_.erase(document_id);
+	words_in_document_.erase(document_id);
 }

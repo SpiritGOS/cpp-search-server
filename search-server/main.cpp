@@ -4,6 +4,7 @@
 #include <utility>
 #include "remove_duplicates.h"
 #include "test_example_functions.h"
+#include "log_duration.h"
 
 using namespace std;
 
@@ -35,6 +36,13 @@ int main() {
     AddDocument(search_server, 9, "nasty rat with curly hair"s, DocumentStatus::ACTUAL, {1, 2});
     
     cout << "Before duplicates removed: "s << search_server.GetDocumentCount() << endl;
-    RemoveDuplicates(search_server);
+    {
+        LOG_DURATION("Remove_Duplicates");
+        RemoveDuplicates(search_server);
+    }
     cout << "After duplicates removed: "s << search_server.GetDocumentCount() << endl;
+    for (const auto& it : search_server) {
+        cout << it << " ";
+    }
+    cout << endl;
 }

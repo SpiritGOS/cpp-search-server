@@ -1,28 +1,22 @@
 #include "remove_duplicates.h"
 
 void RemoveDuplicates(SearchServer& search_server) {
-	set<int> duplicate;
-	for (auto iter1 = search_server.begin(); iter1 != search_server.end(); advance(iter1, 1)) {
-		auto tmp_iter = iter1 + 1;
-		//advance(tmp_iter, 1);
-		set<string> doc1 ;
-		auto first_doc = search_server.GetWordFrequencies(*iter1);
-		for (const auto& f : first_doc) {
-			doc1.insert(f.first);
+	set<int> duplicates;
+	set<set<string>> set_of_words;
+	for (const int document_id : search_server) {
+		set<string> uniq_words;
+		auto words_freq = search_server.GetWordFrequencies(document_id);
+		for (auto [word, freq] : words_freq) {
+			uniq_words.insert(word);
 		}
-		for (auto iter2 = tmp_iter; iter2 != search_server.end(); advance(iter2, 1)) {
-			set<string> doc2;
-			auto second_doc = search_server.GetWordFrequencies(*iter2);
-			for (const auto& f : second_doc) {
-				doc2.insert(f.first);
-			}
-			if (doc1 == doc2) {
-				duplicate.insert(*iter2);
-			}
+		if (set_of_words.count(uniq_words)) {
+			duplicates.insert(document_id);
+		}
+		else {
+			set_of_words.insert(uniq_words);
 		}
 	}
-	for (const auto id : duplicate) {
-		cout << "Found duplicate document id " << id << endl;
+	for (const int id : duplicates) {
 		search_server.RemoveDocument(id);
 	}
 }
