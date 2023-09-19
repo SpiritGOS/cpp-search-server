@@ -49,7 +49,6 @@ class Paginator
 public:
     Paginator(Iterator begin, Iterator end, size_t page_size)
     {
-        assert(end >= begin && page_size > 0);
         for (size_t left = distance(begin, end); left > 0;)
         {
             const size_t current_page_size = std::min(page_size, left);

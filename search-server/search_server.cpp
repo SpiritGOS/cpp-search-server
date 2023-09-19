@@ -38,36 +38,8 @@ std::vector<Document> SearchServer::FindTopDocuments(
 }
 
 std::vector<Document> SearchServer::FindTopDocuments(
-        const std::execution::sequenced_policy policy,
-        const std::string_view raw_query, DocumentStatus status) const {
-    return FindTopDocuments(policy,
-        raw_query, [status](int document_id, DocumentStatus document_status,
-                            int rating) { return document_status == status; });
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(
-        const std::execution::parallel_policy policy,
-        const std::string_view raw_query, DocumentStatus status) const{
-    return FindTopDocuments(policy,
-        raw_query, [status](int document_id, DocumentStatus document_status,
-                            int rating) { return document_status == status; });
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(
     const std::string_view raw_query) const {
     return FindTopDocuments(raw_query, DocumentStatus::ACTUAL);
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(
-        const std::execution::sequenced_policy policy,
-        const std::string_view raw_query) const {
-    return FindTopDocuments(std::execution::seq, raw_query, DocumentStatus::ACTUAL);
-}
-
-std::vector<Document> SearchServer::FindTopDocuments(
-        const std::execution::parallel_policy policy,
-        const std::string_view raw_query) const {
-    return FindTopDocuments(std::execution::par, raw_query, DocumentStatus::ACTUAL);
 }
 
 int SearchServer::GetDocumentCount() const { return documents_.size(); }
@@ -76,7 +48,7 @@ std::set<int>::iterator SearchServer::begin() { return document_ids_.begin(); }
 
 std::set<int>::iterator SearchServer::end() { return document_ids_.end(); }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus>
+SearchServer::DocumentContent
 SearchServer::MatchDocument(const std::string_view raw_query,
                             int document_id) const {
     if (!document_ids_.count(document_id)) {
@@ -111,14 +83,14 @@ SearchServer::MatchDocument(const std::string_view raw_query,
     return {matched_words, documents_.at(document_id).status};
 }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus>
+SearchServer::DocumentContent
 SearchServer::MatchDocument(const std::execution::sequenced_policy policy,
                             const std::string_view raw_query,
                             int document_id) const {
     return MatchDocument(raw_query, document_id);
 }
 
-std::tuple<std::vector<std::string_view>, DocumentStatus>
+SearchServer::DocumentContent
 SearchServer::MatchDocument(const std::execution::parallel_policy policy,
                             const std::string_view raw_query,
                             int document_id) const {

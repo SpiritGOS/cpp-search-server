@@ -10,8 +10,6 @@
 #include <vector>
 #include <mutex>
 
-using namespace std::string_literals;
-
 template <typename Key, typename Value>
 class ConcurrentMap {
 public:
@@ -28,7 +26,7 @@ public:
     return {std::lock_guard(maps_[key % size_].m_), maps_[key % size_].map_[key]};
     }
 
-    void erase(Key key) {
+    void Erase(Key key) {
         std::size_t map_num = key % size_;
         std::lock_guard(maps_[map_num].m_);
         maps_[map_num].map_.erase(key);
